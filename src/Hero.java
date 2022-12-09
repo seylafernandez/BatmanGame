@@ -22,14 +22,14 @@ public class Hero {
 
     //This is a constructor that takes 3 parameters.
     // This allows us to specify the hero's name and position when we build it.
-    public Hero(String pName, int pXpos, int pYpos) { // Astronaut constructor
+    public Hero(String pName, int pXpos, int pYpos, int pwidth, int pheight) { // Astronaut constructor
         name = pName;
-        xpos = (int) (Math.random() * 400 + 100);
-        ypos = (int) (Math.random() * 150 + 50);
+        xpos = pXpos;
+        ypos = pYpos;
         dx = 4;
         dy = 4;
-        width = 100;
-        height = 150;
+        width = pwidth;
+        height = pheight;
         isAlive = true;
         rec = new Rectangle(xpos,ypos,width,height);
         lives = 3;
