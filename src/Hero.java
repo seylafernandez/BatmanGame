@@ -83,14 +83,6 @@ public class Hero {
 
     }
 
-    public void live() {
-        if (isAlive == false) {
-            lives = lives - 1;
-        }
-        if (lives == 0){
-        isAlive = false;
-        }
-    }
 
 
 }

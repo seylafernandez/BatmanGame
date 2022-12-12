@@ -83,20 +83,20 @@ public class BasicGameApp implements Runnable {
 		backgroundPic = Toolkit.getDefaultToolkit().getImage("GothamDark.png");
 
 		//batman constructor
-		batman = new Hero("batman", 50,800, 150, 100);
+		batman = new Hero("batman", (int) (Math.random() * 800), (int) (Math.random() * 500), 150, 100);
 		batmanPic = Toolkit.getDefaultToolkit().getImage("batman.png");
 
 		//joker constructor
-		joker = new Hero("joker", 100,400, 150, 150);
+		joker = new Hero("joker", (int) (Math.random() * 800), (int) (Math.random() * 500), 150, 150);
 		jokerPic = Toolkit.getDefaultToolkit().getImage("joker.png");
 
 		//harley constructor
-		harley = new Hero ("harley", 100,100, 100, 150);
+		harley = new Hero("harley", 750, 500, 100, 150);
 		harleyPic = Toolkit.getDefaultToolkit().getImage("harley.png");
 
 		//robin constructor
 		robinPic = Toolkit.getDefaultToolkit().getImage("Robin.png");
-		robin = new Hero("robin", 500,200, 200, 150);
+		robin = new Hero("robin", 150, 50, 200, 150);
 
 		//lives constructors
 		heartPicThree = Toolkit.getDefaultToolkit().getImage("threeheart.png");
@@ -127,6 +127,10 @@ public class BasicGameApp implements Runnable {
 			//crash methods
 			JokerBatmanCrash();
 			BatmanRobinCrash();
+			//JokerRobinCrash();
+			JokerHarleyCrash();
+			//BatmanHarleyCrash();
+			HarleyRobinCrash();
 
 			render();  // paint the graphics
 			pause(20); // sleep for 10 ms
@@ -138,7 +142,7 @@ public class BasicGameApp implements Runnable {
 		//calls the move( ) code in the objects
 		batman.bounce();
 		//everyone stops if batman dies
-		if (batman.lives<0) {
+		if (batman.lives < 0) {
 			batman.isAlive = false;
 			joker.isAlive = false;
 			robin.isAlive = false;
@@ -147,7 +151,7 @@ public class BasicGameApp implements Runnable {
 
 		joker.bounce();
 		//everyone stops if joker dies
-		if (joker.lives<0) {
+		if (joker.lives < 0) {
 			joker.isAlive = false;
 			batman.isAlive = false;
 			robin.isAlive = false;
@@ -156,13 +160,13 @@ public class BasicGameApp implements Runnable {
 
 		robin.bounce();
 		//robin dies if loses all lives
-		if (robin.lives<0) {
+		if (robin.lives < 0) {
 			robin.isAlive = false;
 		}
 
 		harley.bounce();
 		//harley dies if loses all lives
-		if (harley.lives<0) {
+		if (harley.lives < 0) {
 			harley.isAlive = false;
 		}
 
@@ -170,52 +174,134 @@ public class BasicGameApp implements Runnable {
 
 	//crash methods
 
+
 	public void JokerBatmanCrash() {
-		if (joker.rec.intersects(batman.rec)&& joker.isCrashing == false) {
+		if (joker.isAlive && batman.isAlive) {
+			if (joker.rec.intersects(batman.rec) && joker.isCrashing == false) {
 
-			System.out.println("joker losing life " + joker.lives);
-			joker.isCrashing = true;
-			joker.lives = joker.lives - 1;
-			joker.dx = -4;
+				System.out.println("joker losing life " + joker.lives);
+				joker.isCrashing = true;
+				joker.lives = joker.lives - 1;
+				joker.dx = -4;
+			}
+
+			if (!joker.rec.intersects(batman.rec)) {
+				joker.isCrashing = false;
+			}
+
+			if (batman.rec.intersects(joker.rec) && batman.isCrashing == false) {
+
+				System.out.println("batman losing life " + batman.lives);
+				batman.isCrashing = true;
+				batman.lives = batman.lives - 1;
+			}
+
+			if (!batman.rec.intersects(joker.rec)) {
+				batman.isCrashing = false;
+			}
+
 		}
+	}
 
-		if (!joker.rec.intersects(batman.rec)) {
-			joker.isCrashing = false;
-		}
+	public void HarleyRobinCrash() {
+		if (harley.isAlive && robin.isAlive) {
 
-		if (batman.rec.intersects(joker.rec)&& batman.isCrashing == false) {
+			if (harley.rec.intersects(robin.rec) && harley.isCrashing == false) {
 
-			System.out.println("batman losing life " + batman.lives);
-			batman.isCrashing = true;
-			batman.lives = batman.lives - 1;
-		}
+				System.out.println("harley losing life " + harley.lives);
+				harley.isCrashing = true;
+				harley.lives = harley.lives - 1;
+			}
 
-		if (!batman.rec.intersects(joker.rec)) {
-			batman.isCrashing = false;
+			if (!harley.rec.intersects(robin.rec)) {
+				harley.isCrashing = false;
+			}
+
+			if (robin.rec.intersects(harley.rec) && robin.isCrashing == false) {
+
+				System.out.println("robin losing life " + robin.lives);
+				robin.isCrashing = true;
+				robin.lives = robin.lives - 1;
+			}
+
+			if (!robin.rec.intersects(harley.rec)) {
+				robin.isCrashing = false;
+			}
 		}
 
 	}
 
+
 	public void BatmanRobinCrash(){
-		if (batman.rec.intersects(robin.rec) && batman.isCrashing == false) {
-			batman.isCrashing = true;
-			if (batman.lives < 3) {
-				batman.lives = batman.lives + 1;
-				System.out.println("batman gain, lives =" + batman.lives);
+		if (batman.isAlive && robin.isAlive) {
+			if (batman.rec.intersects(robin.rec) && batman.isCrashing == false) {
+				batman.isCrashing = true;
+				if (batman.lives < 3) {
+					batman.lives = batman.lives + 1;
+					System.out.println("batman gain, lives =" + batman.lives);
+				}
+				if (!batman.rec.intersects(robin.rec)) {
+					batman.isCrashing = false;
+				}
 			}
-			if (!batman.rec.intersects(robin.rec)) {
-				batman.isCrashing = false;
+			if (robin.rec.intersects(batman.rec) && robin.isCrashing == false) {
+				robin.isCrashing = true;
+				if (robin.lives < 3) {
+					robin.lives = robin.lives + 1;
+					System.out.println("robin gain, lives =" + robin.lives);
+				}
+				if (!robin.rec.intersects(batman.rec)) {
+					robin.isCrashing = false;
+				}
 			}
 		}
-		if (robin.rec.intersects(batman.rec) && robin.isCrashing == false) {
-			robin.isCrashing = true;
-			if (robin.lives <3) {
-				robin.lives = robin.lives + 1;
-				System.out.println("robin gain, lives =" + robin.lives);
+	}
+
+	public void JokerHarleyCrash(){
+		if (joker.isAlive && harley.isAlive) {
+			if (joker.rec.intersects(harley.rec) && joker.isCrashing == false) {
+				joker.isCrashing = true;
+				if (joker.lives <= 2) {
+					joker.lives = joker.lives + 1;
+					System.out.println("joker gain, lives =" + joker.lives);
+				}
+				if (!joker.rec.intersects(harley.rec)) {
+					joker.isCrashing = false;
+				}
 			}
-			if (!robin.rec.intersects(batman.rec)) {
+			if (harley.rec.intersects(joker.rec) && harley.isCrashing == false) {
+				harley.isCrashing = true;
+				if (harley.lives <= 2) {
+					harley.lives = harley.lives + 1;
+					System.out.println("harley gain, lives =" + harley.lives);
+				}
+				if (!harley.rec.intersects(joker.rec)) {
+					harley.isCrashing = false;
+				}
+			}
+		}
+	}
+
+	// decided not to use these two, bc the sidekicks died too quickly
+	public void JokerRobinCrash(){
+		if (robin.rec.intersects(joker.rec) && robin.isCrashing == false) {
+			robin.isCrashing = true;
+			robin.lives = robin.lives - 1;
+				System.out.println("robin loses, lives =" + robin.lives);
+			}
+			if (!robin.rec.intersects(joker.rec)) {
 				robin.isCrashing = false;
 			}
+		}
+
+	public void BatmanHarleyCrash(){
+		if (harley.rec.intersects(batman.rec) && harley.isCrashing == false) {
+			harley.isCrashing = true;
+			harley.lives = harley.lives - 1;
+			System.out.println("harley loses, lives =" + harley.lives);
+		}
+		if (!harley.rec.intersects(batman.rec)) {
+			harley.isCrashing = false;
 		}
 	}
 
@@ -263,99 +349,106 @@ public class BasicGameApp implements Runnable {
 
 		g.drawImage(backgroundPic, 0, 0, WIDTH, HEIGHT, null);
 
-		//draw the image of the astronaut
 
 if (batman.isAlive == true && joker.isAlive == true) {
 
+	//render batman
 	if (batman.isAlive == true) {
 		g.drawImage(batmanPic, batman.xpos, batman.ypos, batman.width, batman.height, null);
-	}
-
-	{
+		//render lives
 		if (batman.lives == 0) {
-		g.drawImage(heartPicZero, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
-	}
-	if (batman.lives == 1) {
-		g.drawImage(heartPicOne, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
-	}
+			g.drawImage(heartPicZero, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
+		}
 
-	if (batman.lives == 2) {
-		g.drawImage(heartPicTwo, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
-	}
+		if (batman.lives == 1) {
+			g.drawImage(heartPicOne, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
+		}
 
-	if (batman.lives >= 3) {
-		g.drawImage(heartPicThree, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
-	}
+		if (batman.lives == 2) {
+			g.drawImage(heartPicTwo, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
+		}
 
-
-	if (joker.lives == 0) {
-		g.drawImage(heartPicZero, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
+		if (batman.lives >= 3) {
+			g.drawImage(heartPicThree, batman.xpos + 55, batman.ypos - 30, 100, 30, null);
+		}
 	}
 
-	if (joker.lives == 1) {
-		g.drawImage(heartPicOne, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
-	}
-
-	if (joker.lives == 2) {
-		g.drawImage(heartPicTwo, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
-	}
-
-	if (joker.lives >= 3) {
-		g.drawImage(heartPicThree, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
-	}
-
+	//render joker
 	if (joker.isAlive == true) {
 		g.drawImage(jokerPic, joker.xpos, joker.ypos, joker.width, joker.height, null);
 		//g.drawRect(joker.rec.x, joker.rec.y, joker.rec.width, joker.rec.height);
-	}
-	if (robin.lives == 0) {
-		g.drawImage(heartPicZero, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
-	}
-	if (robin.lives == 1) {
-		g.drawImage(heartPicOne, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
-	}
-	if (robin.lives == 2) {
-		g.drawImage(heartPicTwo, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
-	}
-	if (robin.lives >= 3) {
-		g.drawImage(heartPicThree, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
+
+		if (joker.lives == 0) {
+			g.drawImage(heartPicZero, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
+		}
+
+		if (joker.lives == 1) {
+			g.drawImage(heartPicOne, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
+		}
+
+		if (joker.lives == 2) {
+			g.drawImage(heartPicTwo, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
+		}
+
+		if (joker.lives >= 3) {
+			g.drawImage(heartPicThree, joker.xpos + 55, joker.ypos - 30, 100, 30, null);
+		}
+
 	}
 
 	if (robin.isAlive == true) {
 		g.drawImage(robinPic, robin.xpos, robin.ypos, robin.width, robin.height, null);
+
+		if (robin.lives == 0) {
+			g.drawImage(heartPicZero, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
+		}
+		if (robin.lives == 1) {
+			g.drawImage(heartPicOne, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
+		}
+		if (robin.lives == 2) {
+			g.drawImage(heartPicTwo, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
+		}
+		if (robin.lives >= 3) {
+			g.drawImage(heartPicThree, robin.xpos + 55, robin.ypos - 30, 100, 30, null);
+		}
+
 	}
+
+	if (harley.isAlive == true) {
+		g.drawImage(harleyPic, harley.xpos, harley.ypos, harley.width, harley.height, null);
 
 		if (harley.lives == 0) {
-			g.drawImage(heartPicZero, harley.xpos + 55, harley.ypos - 30, 100, 30, null);
+			g.drawImage(heartPicZero, harley.xpos + 20, harley.ypos - 30, 100, 30, null);
 		}
 		if (harley.lives == 1) {
-			g.drawImage(heartPicOne, harley.xpos + 55, harley.ypos - 30, 100, 30, null);
+			g.drawImage(heartPicOne, harley.xpos + 20, harley.ypos - 30, 100, 30, null);
 		}
 		if (harley.lives == 2) {
-			g.drawImage(heartPicTwo, harley.xpos + 55, harley.ypos - 30, 100, 30, null);
+			g.drawImage(heartPicTwo, harley.xpos + 20, harley.ypos - 30, 100, 30, null);
 		}
 		if (harley.lives >= 3) {
-			g.drawImage(heartPicThree, harley.xpos + 55, harley.ypos - 30, 100, 30, null);
+			g.drawImage(heartPicThree, harley.xpos + 20, harley.ypos - 30, 100, 30, null);
 		}
-
-	if (harley.isAlive == true){
-		g.drawImage(harleyPic, harley.xpos, harley.ypos, harley.width, harley.height, null);}
 
 	}
-
 }
-
 		if (batman.isAlive == true && joker.isAlive == false){
-			g.drawImage(win,250,100,500,500, null);
+			g.drawImage(win,250,100,500,500, null); }
 
+		if (batman.isAlive == false  && joker.isAlive == true){
+			g.drawImage(lose, 250,100,500,500,null);
 		}
-
-
-
-
-
 
 		g.dispose();
 		bufferStrategy.show();
-	}
 }
+
+}
+
+
+
+
+
+
+
+
