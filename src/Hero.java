@@ -18,6 +18,8 @@ public class Hero {
     public Rectangle rec;
     public int lives;
     public boolean isCrashing;
+    public boolean isMeeting;
+    public boolean isHitting;
 
 
     //This is a constructor that takes 3 parameters.
