@@ -206,6 +206,7 @@ public class BasicGameApp implements Runnable {
 		}
 	}
 
+	//when harley and robin crash each lose life
 	public void HarleyRobinCrash() {
 		if (harley.isAlive && robin.isAlive) {
 
@@ -235,12 +236,13 @@ public class BasicGameApp implements Runnable {
 	}
 
 
+	//when batman and robin meet give one life
 	public void BatmanRobinCrash(){
 		if (batman.isAlive && robin.isAlive) {
 			if (batman.rec.intersects(robin.rec) && batman.isMeeting == false) {
 				batman.isMeeting = true;
 				if (batman.lives < 3) {
-					batman.lives = batman.lives + 1;
+					batman.lives = batman.lives + 1; //gains life
 					System.out.println("batman met robin, batman lives " + batman.lives);
 				}
 				if (!batman.rec.intersects(robin.rec)) {
@@ -260,6 +262,7 @@ public class BasicGameApp implements Runnable {
 		}
 	}
 
+	//when joker and harley meet each gain life
 	public void JokerHarleyCrash(){
 		if (joker.isAlive && harley.isAlive) {
 			if (joker.rec.intersects(harley.rec) && joker.isMeeting == false) {
@@ -285,7 +288,7 @@ public class BasicGameApp implements Runnable {
 		}
 	}
 
-	// decided not to use these two, bc the sidekicks died too quickly
+	//when joker and robin hit only robin loses life
 	public void JokerRobinCrash(){
 		if (robin.rec.intersects(joker.rec) && robin.isHitting == false) {
 			robin.isHitting = true;
@@ -308,6 +311,7 @@ public class BasicGameApp implements Runnable {
 
 	}
 
+	//when batman and harley hit only harley loses life
 	public void BatmanHarleyCrash(){
 		if (harley.rec.intersects(batman.rec) && harley.isHitting == false) {
 			harley.isHitting = true;
@@ -456,6 +460,9 @@ public class BasicGameApp implements Runnable {
 
 			}
 		}
+		//ending screens
+		//if both die, "tie" and nothing happens
+
 		if (batman.isAlive == true && joker.isAlive == false){
 			g.drawImage(win,250,100,500,500, null); }
 
